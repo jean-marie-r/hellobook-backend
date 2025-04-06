@@ -10,7 +10,7 @@ export class UsersController {
     constructor(private readonly getUserUseCase: GetUserUseCase, private readonly createUserUsecae: CreateUserUseCase) {}
 
     @Post()
-    async createUser(@Body(ValidationPipe) createUserDto: CreateUserDto): Promise<HttpResponse<User | null>> {
+    async createUser(@Body() createUserDto: CreateUserDto): Promise<HttpResponse<User | null>> {
         const user = await this.createUserUsecae.execute(createUserDto);
 
         return HttpResponse.created(user);

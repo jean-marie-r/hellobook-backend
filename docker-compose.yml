@@ -12,7 +12,7 @@ services:
             - POSTGRES_USER=${POSTGRES_USER}
             - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
             - POSTGRES_DB=${POSTGRES_DB}
-            - DATABASE_URL=postgresql://postgres:superpassword@db:5432/postgres?schema=public
+            - DATABASE_URL=${DATABASE_URL}
         command: ['./scripts/start.sh']
         volumes:
             - ./:/app
@@ -31,9 +31,9 @@ services:
         ports:
             - 5432:5432
         environment:
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=superpassword
-            - POSTGRES_DB=postgres
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_DB=${POSTGRES_DB}
         volumes:
             - hellobook_data:/var/lib/postgresql/data
         healthcheck:

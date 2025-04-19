@@ -4,6 +4,8 @@ import { PrismaService } from './prisma.service';
 
 import { UserRepository } from 'src/core/repositories/user.repository';
 import { PrismaUserRepository } from './repositories/prisma-user.repository';
+import { BookRepository } from 'src/core/repositories/book.repository';
+import { PrismaBookRepository } from './repositories/prisma-book.repositoruy';
 
 @Module({
     imports: [], // set .env
@@ -12,8 +14,12 @@ import { PrismaUserRepository } from './repositories/prisma-user.repository';
         {
             provide: UserRepository,
             useClass: PrismaUserRepository
+        },
+        {
+            provide: BookRepository,
+            useClass: PrismaBookRepository
         }
     ],
-    exports: [PrismaService, UserRepository],
+    exports: [PrismaService, UserRepository, BookRepository],
 })
-export class PrismaModule {}
+export class PrismaModule { }

@@ -5,12 +5,12 @@ import { IdGeneratorModule } from 'src/infrastructure/providers/id-generator/id-
 
 import { UsersController } from './users.controller';
 
-import { GetUserUseCase } from 'src/core/use-cases/get-user.usecase';
-import { CreateUserUseCase } from 'src/core/use-cases/create-user.usecase';
+import { GetUserUseCase } from 'src/core/use-cases/users/get-user.usecase';
+import { CreateUserUseCase } from 'src/core/use-cases/users/create-user.usecase';
 
 @Module({
     imports: [IdGeneratorModule],
     controllers: [UsersController],
     providers: [CreateUserUseCase, GetUserUseCase],
 })
-export class ControllerModule {}
+export class ControllerModule { }

@@ -6,7 +6,7 @@ import { User } from 'src/core/entities/user.entity';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
-    constructor(private prisma: PrismaService) {}
+    constructor(private prisma: PrismaService) { }
 
     async findById(id: string): Promise<User | null> {
         const user = await this.prisma.user.findUnique({
@@ -23,7 +23,7 @@ export class PrismaUserRepository implements UserRepository {
                 lastName: data.lastName,
                 email: data.email,
                 password: data.password
-              },
+            },
         })
 
         return user ? User.instance(user) : null;

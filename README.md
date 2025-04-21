@@ -14,3 +14,12 @@ POSTGRES_PORT=5432
 DATABASE_URL=postgresql://postgres:yourpassword@db:5432/postgres?schema=public
 HEALTHCHECK_URL=localhost:4000/api/health
 ```
+
+## Tech Stack
+
+- NestJS & TypeScript
+- Vitest
+- Prisma ORM
+- PostgreSQL
+- Docker
+- JWT Authentication

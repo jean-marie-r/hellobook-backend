@@ -5,7 +5,7 @@ import { HttpResponse, StatusCodes } from 'src/application/http/http-response';
 import { USER_NOT_FOUND } from 'src/application/messages/user.message';
 
 @Injectable()
-export class GetUserUseCase {
+export class FindUserUseCase {
     constructor(private userRepository: UserRepository) { }
 
     async execute(id: string) {

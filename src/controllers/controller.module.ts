@@ -5,7 +5,7 @@ import { IdGeneratorModule } from 'src/infrastructure/providers/id-generator/id-
 
 import { UsersController } from './users.controller';
 
-import { GetUserUseCase } from 'src/core/use-cases/users/get-user.usecase';
+import { GetUserUseCase } from 'src/core/use-cases/users/find-user.usecase';
 import { CreateUserUseCase } from 'src/core/use-cases/users/create-user.usecase';
 
 @Module({

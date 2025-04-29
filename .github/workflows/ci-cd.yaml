@@ -4,7 +4,7 @@ on:
   [workflow_dispatch]
 
 jobs:
-  publish_images:
+  publish_image:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -14,4 +14,5 @@ jobs:
           docker build . -t terabuild/hellobook-backend:latest
       - name: Push docker image
         run: |
+          docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" -p "${{ secrets.DOCKER_HUB_TOKEN }}"
           docker push terabuild/hellobook-backend:latest

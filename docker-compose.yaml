@@ -5,6 +5,8 @@ services:
         build:
             context: .
             target: ${NODE_ENV:-development}
+        tags:
+            - latest
         ports:
             - '${PORT}:${PORT}'
         environment:
@@ -24,11 +26,11 @@ services:
             timeout: 10s
             retries: 3
         depends_on:
-            db:
+            postgres:
                 condition: service_healthy
 
-    db:
-        container_name: db
+    postgres:
+        container_name: postgres_db
         image: postgres:16-alpine
         ports:
             - 5432:5432

@@ -5,7 +5,8 @@ on:
     workflows: ["CI Pipeline"]
     types:
       - completed
-
+      
+jobs:
   deploy:
     needs: publish_image
     runs-on: aws-ec2

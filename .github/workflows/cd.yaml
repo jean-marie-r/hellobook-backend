@@ -27,4 +27,4 @@ jobs:
             -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
             -e DATABASE_TYPE=${{ secrets.DATABASE_TYPE }} \
             -e HEALTHCHECK_URL=${{ secrets.HEALTHCHECK_URL }} \
-            terabuild/hellobook-backend
+            terabuild/hellobook-backend:latest

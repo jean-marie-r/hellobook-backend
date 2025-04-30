@@ -42,6 +42,9 @@ FROM node:20-alpine AS production
 
 WORKDIR /app
 
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package*.json ./
@@ -49,3 +52,5 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/scripts ./scripts
 
 EXPOSE ${PORT}
+
+CMD ["./scripts/start.sh"]

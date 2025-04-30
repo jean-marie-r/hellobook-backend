@@ -24,9 +24,8 @@ jobs:
             --name hellobook-backend \
             -p 4000:4000 \
             -e NODE_ENV=production \
-            -e POSTGRES_USER=${{ secrets.POSTGRES_USER }} \
-            -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
-            -e POSTGRES_DB=${{ secrets.POSTGRES_DB }} \
+            -e PORT=4000 \
             -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
+            -e DATABASE_TYPE=${{ secrets.DATABASE_TYPE }} \
             -e HEALTHCHECK_URL=${{ secrets.HEALTHCHECK_URL }} \
             terabuild/hellobook-backend

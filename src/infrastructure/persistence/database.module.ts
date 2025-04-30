@@ -2,7 +2,7 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { PrismaModule } from './prisma/prisma.module';
 
 interface DatabaseOptions {
-    type: 'prisma' | 'mongoose';
+    type: 'postgres' | 'mongodb';
     global?: boolean;
 }
 

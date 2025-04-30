@@ -6,7 +6,7 @@ import { DatabaseModule } from 'src/infrastructure/persistence/database.module';
 @Module({
   imports: [
     ControllerModule,
-    DatabaseModule.register({ global: true, type: 'prisma' }),
+    DatabaseModule.register({ global: true, type: process.env.DATABASE_TYPE as 'postgres' | 'mongodb' }),
   ],
 })
-export class AppModule {}
+export class AppModule { }

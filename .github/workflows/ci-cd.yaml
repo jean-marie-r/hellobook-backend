@@ -1,4 +1,4 @@
-name: Push Docker image to Docker Hub
+name: CI/CD Pipeline
 
 on:
   [workflow_dispatch]
@@ -7,7 +7,7 @@ jobs:
   publish_image:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout source code
         uses: actions/checkout@v4
       - name: Build docker image
         run: |
@@ -16,3 +16,27 @@ jobs:
         run: |
           docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" -p "${{ secrets.DOCKER_HUB_TOKEN }}"
           docker push terabuild/hellobook-backend:latest
+
+  deploy:
+    needs: publish_image
+    runs-on: aws-ec2
+    steps:
+      - name: Pull docker image from Docker Hub
+        run: |
+          docker pull terabuild/hellobook-backend:latest
+      - name: Stop and remove existing container
+        run: |
+          docker stop hellobook-backend || true
+          docker rm -f hellobook-backend || true
+      - name: Run new container
+        run: |
+          docker run -d \
+            --name hellobook-backend \
+            -p 4000:4000 \
+            -e NODE_ENV=production \
+            -e POSTGRES_USER=${{ secrets.POSTGRES_USER }} \
+            -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
+            -e POSTGRES_DB=${{ secrets.POSTGRES_DB }} \
+            -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
+            -e HEALTHCHECK_URL=${{ secrets.HEALTHCHECK_URL }} \
+            terabuild/hellobook-backend:latest

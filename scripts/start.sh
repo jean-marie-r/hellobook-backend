@@ -2,10 +2,9 @@
 
 set -e
 
-# Wait for the database to be ready
-until psql "$DATABASE_URL"; do
+until PGPASSWORD=$POSTGRES_PASSWORD psql -h "$POSTGRES_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c '\q'; do
   >&2 echo "Postgres is unavailable - sleeping"
-  sleep 1
+  sleep 2
 done
 
 >&2 echo "Postgres is up - executing command"
@@ -25,3 +24,6 @@ if [ "$NODE_ENV" = "production" ]; then
 else
   npm run start:dev
 fi
+
+# Clean up
+unset PGPASSWORD

@@ -7,6 +7,8 @@ export class HealthController {
 
     @Get()
     async getHealth(): Promise<HttpResponse<{ status: string }>> {
-        return HttpResponse.success({ status: "All Systems Operational" });
+        const DATABASE_URL = process.env.DATABASE_URL;
+
+        return HttpResponse.success({ status: `All Systems Operational ${DATABASE_URL}` });
     }
 }

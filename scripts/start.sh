@@ -2,7 +2,22 @@
 
 set -e
 
->&2 echo "$NODE_ENV"
+# Wait for the database to be ready
+until psql "$DATABASE_URL"; do
+  >&2 echo "Postgres is unavailable - sleeping"
+  sleep 1
+done
+
+>&2 echo "Postgres is up - executing command"
+
+# Run migrations
+npm run prisma:generate
+
+if [ -z "$(ls -A prisma/migrations)" ]; then
+    npx prisma migrate dev --name init
+else
+    npm run prisma:migrate
+fi
 
 # Start the application
 if [ "$NODE_ENV" = "production" ]; then

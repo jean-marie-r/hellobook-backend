@@ -1,5 +1,7 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, IsEnum } from 'class-validator';
 import { Transform } from 'class-transformer';
+
+enum Role { USER = 'USER', ADMIN = 'ADMIN' }
 
 export class CreateUserDto {
     @IsString()
@@ -18,6 +20,10 @@ export class CreateUserDto {
     @IsString()
     @IsNotEmpty()
     password: string;
+
+    @IsString()
+    @IsEnum(Role)
+    role: Role;
 
     // @IsString()
     // @IsNotEmpty()

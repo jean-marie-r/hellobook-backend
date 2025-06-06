@@ -1,12 +1,11 @@
 services:
     backend:
         container_name: backend
+        dockerfile: Dockerfile.dev
         image: hellobook-backend
         build:
             context: .
             target: ${NODE_ENV:-development}
-        tags:
-            - latest
         ports:
             - '${PORT}:${PORT}'
         environment:

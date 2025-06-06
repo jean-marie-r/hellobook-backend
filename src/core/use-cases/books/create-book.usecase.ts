@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 
 import { BookRepository } from '../../repositories/book.repository';
-import { Book } from '../../entities/book.entity';
+import { CreateBookDto } from 'src/application/dtos/books/create-book.dto';
 
 @Injectable()
-export class CreateUserUseCase {
+export class CreateBookUseCase {
     constructor(private bookRepository: BookRepository) { }
 
-    async execute(data: Book) {
+    async execute(data: CreateBookDto) {
         const book = await this.bookRepository.create(data);
 
         return book;

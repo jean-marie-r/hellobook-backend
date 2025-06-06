@@ -5,10 +5,10 @@ import { HttpResponse, StatusCodes } from 'src/application/http/http-response';
 import { USER_NOT_FOUND } from 'src/application/messages/user.message';
 
 @Injectable()
-export class FindUserUseCase {
+export class GetUserUseCase {
     constructor(private userRepository: UserRepository) { }
 
-    async execute(id: string) {
+    async execute(id: number) {
         const user = await this.userRepository.findById(id);
 
         if (!user) throw new HttpException(HttpResponse.error(USER_NOT_FOUND, StatusCodes.NOT_FOUND), StatusCodes.NOT_FOUND);

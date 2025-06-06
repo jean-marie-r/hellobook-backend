@@ -14,14 +14,167 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
+  id        Int      @id @default(autoincrement())
+  firstName String   @db.VarChar(50)
+  lastName  String   @db.VarChar(50)
+  email     String   @unique @db.VarChar(50)
   password  String
-  lastName  String
-  firstName String
+  role      Role     @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  orders  Order[]
+  reviews Review[]
 
   @@map("users")
 }
 
+model Review {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  bookId    Int
+  rating    Int      @default(0)
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+  book Book @relation(fields: [bookId], references: [id])
+
+  @@map("reviews")
+}
+
+model Order {
+  id          Int         @id @default(autoincrement())
+  userId      Int
+  status      OrderStatus @default(PENDING)
+  totalAmount Decimal     @db.Decimal(10, 2)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  user    User     @relation(fields: [userId], references: [id])
+  items   Item[]
+  payment Payment?
+
+  @@map("orders")
+}
+
+model Item {
+  id       Int     @id @default(autoincrement())
+  orderId  Int
+  bookId   Int
+  quantity Int
+  price    Decimal @db.Decimal(10, 2)
+
+  order Order @relation(fields: [orderId], references: [id])
+  book  Book  @relation(fields: [bookId], references: [id])
+
+  @@map("items")
+}
+
+model Payment {
+  id            Int           @id @default(autoincrement())
+  orderId       Int           @unique
+  amount        Decimal       @db.Decimal(10, 2)
+  status        PaymentStatus @default(PENDING)
+  paymentMethod PaymentMethod @default(DEBIT_CARD)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  order Order? @relation(fields: [orderId], references: [id])
+
+  @@map("payments")
+}
+
+model Book {
+  id            Int      @id @default(autoincrement())
+  authorId      Int
+  categoryId    Int
+  isbn          String   @unique @db.VarChar(13)
+  name          String   @unique @db.VarChar(50)
+  slug          String   @unique @db.VarChar(255)
+  coverImageUrl String   @db.VarChar(255)
+  format        String   @db.VarChar(20)
+  publishedDate DateTime
+  audience      String   @db.VarChar(50)
+  size          String   @db.VarChar(50)
+  description   String?
+  pages         Int
+  weight        Float
+  price         Decimal  @db.Decimal(10, 2)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  reviews  Review[]
+  items    Item[]
+  stock    Stock?
+  author   Author   @relation(fields: [authorId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
+
+  @@map("books")
+}
+
+model Author {
+  id        Int       @id @default(autoincrement())
+  firstName String
+  lastName  String
+  bio       String?
+  birthDate DateTime
+  deathDate DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  books Book[]
+
+  @@map("authors")
+}
+
+model Stock {
+  id            Int      @id @default(autoincrement())
+  bookId        Int      @unique
+  quantity      Int
+  lastCheckedAt DateTime
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  book Book @relation(fields: [bookId], references: [id])
+
+  @@map("stocks")
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  books Book[]
+
+  @@map("categories")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  DEBIT_CARD
+  PAYPAL
+}
